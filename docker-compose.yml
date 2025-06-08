@@ -1,0 +1,45 @@
+services:
+  healthcare-frontend:
+    build: ./frontend
+    container_name: healthcare-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - healthcare-backend
+
+  healthcare-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: healthcare-backend
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: healthcare_db
+      DB_USER: healthcare_user
+      DB_PASSWORD: healthcare_pass
+      AI_API_KEY: your_production_ai_model_key
+      AI_API_PROVIDER: OPEN_AI
+      JWT_SECRET: u3E7R9k7PX8j1tE2gLxWq9G7vZfHk3lTmHnPwNzT6aLgYrXy7zPqRsUwZp3MvBnK
+      JWT_EXPIRATION: 3600000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: healthcare-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
