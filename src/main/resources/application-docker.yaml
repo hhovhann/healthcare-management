@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: healthcare-management
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:healthcare_db}
+    driverClassName: org.postgresql.Driver
+    username: ${DB_USER:healthcare_user}
+    password: ${DB_PASSWORD:healthcare_pass}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+# JWT Configuration
+app:
+  token:
+    secret:
+      key: ${JWT_SECRET:jwtSecretKey}
+      expiration: ${JWT_EXPIRATION:3600000} # 1 hour in milliseconds
+
+
+ai:
+  api:
+    provider: ${AI_API_PROVIDER:OPEN_AI}
+    key: ${AI_API_KEY:sk-abcdef1234567890abcdef1234567890abcdef12}
+
+server:
+  port: 8081
